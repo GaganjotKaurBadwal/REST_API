@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Book</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <hr>
+        <h1>Create New Book</h1>
+        <hr>
+
+        <form id="addBookForm" method="POST">
+            <div class="form-group">
+                <label for="isbn">ISBN</label>
+                <input class="form-control" name="isbn" id="isbn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input class="form-control" name="title" id="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input class="form-control" name="author" id="author" required>
+            </div>
+
+            <div class="form-group">
+                <label for="publish_date">Published Date</label>
+                <input class="form-control" name="publish_date" id="publish_date" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="publisher">Publisher</label>
+                <input class="form-control" name="publisher" id="publisher" required>
+            </div>
+
+            <div class="form-group">
+                <label for="numOfPages">Number of Pages</label>
+                <input class="form-control" name="numOfPages" id="numOfPages" type="number" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Handle the form submission with JavaScript
+        document.getElementById('addBookForm').onsubmit = function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "http://localhost:3000/book", true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.onload = function() {
+                if (xhttp.status === 200) {
+                    alert('Book added successfully!');
+                    // Optionally, you can redirect or clear the form here
+                    this.reset(); // Clear the form
+                } else {
+                    alert('Failed to add the book: ' + xhttp.responseText);
+                }
+            };
+            xhttp.send(JSON.stringify(data)); // Send the form data as JSON
+        };
+    </script>
+</body>
+</html>
